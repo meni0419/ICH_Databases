@@ -122,3 +122,8 @@ alter table goods
 alter table goods
     modify price int;
 
+ALTER TABLE goods RENAME COLUMN price TO item_price;
+alter table goods change item_price price int;
+
+alter table goods
+    drop column price;

@@ -54,3 +54,8 @@ ALTER TABLE goods CHANGE item_price price numeric(8,2);
 
 # 11. Удалите это поле
 alter table goods drop column item_price;
+
+# внезапный доп)
+alter table goods add column in_stock varchar(1);
+update goods set in_stock = 'Y' where quantity < 50;
+update goods set in_stock = 'N' where quantity >= 50;
