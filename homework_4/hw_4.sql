@@ -1,5 +1,5 @@
 # 1. Создать базу данных онлайн-магазина из двух таблиц: заказчики (Customer) и заказы (Orders).
-create database if not exists online_shop_MM091224;
+#create database if not exists online_shop_MM091224;
 
 create table if not exists Customers
 (
@@ -20,19 +20,35 @@ create table if not exists Customers
 
 # 4. К таблице Customer добавить поле last_modified, которое содержит дату последнего
 # изменения данных заказчика. Установить его значение в now.
-create table if not exists Orders
+CREATE TABLE `Orders`
 (
-    order_id         INT AUTO_INCREMENT PRIMARY KEY,                                                                         -- Unique order ID
-    customer_id      INT                                                                 NOT NULL,                           -- ID of the customer placing the order
-    order_date       TIMESTAMP                                                                    DEFAULT CURRENT_TIMESTAMP, -- Date and time when the order was placed
-    status           ENUM ('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled') NOT NULL DEFAULT 'Pending',         -- Status of the order
-    total_amount     DECIMAL(10, 2)                                                      NOT NULL,                           -- Total amount for the order
-    shipping_address TEXT                                                                NOT NULL,                           -- Shipping address for the order
-    payment_method   ENUM ('Credit Card', 'PayPal', 'Cash on Delivery')                  NOT NULL,                           -- Payment method
-    updated_at       TIMESTAMP                                                                    DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP,                                                                                         -- Last time this record was updated
-    FOREIGN KEY (customer_id) REFERENCES Customers (customer_id)                                                             -- Links to `Customers` table
+    `order_id`         int PRIMARY KEY                                                 NOT NULL AUTO_INCREMENT,
+    `customer_id`      int                                                             NOT NULL,
+    `order_name`       varchar(100)                                                             DEFAULT NULL,
+    `order_date`       timestamp                                                       NULL     DEFAULT CURRENT_TIMESTAMP,
+    `status`           enum ('Pending','Processing','Shipped','Delivered','Cancelled') NOT NULL DEFAULT 'Pending',
+    `total_amount`     decimal(10, 2)                                                  NOT NULL,
+    `shipping_address` text                                                            NOT NULL,
+    `payment_method`   enum ('Credit Card','PayPal','Cash on Delivery')                NOT NULL,
+    `updated_at`       timestamp                                                       NULL     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `discounter_price` decimal(10, 2)                                                           DEFAULT NULL,
+    KEY `customer_id` (`customer_id`),
+    CONSTRAINT `Orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `Customers` (`customer_id`) ON DELETE CASCADE
 );
+
+
+-- Create the Goods table
+CREATE TABLE Goods
+(
+    goods_id       INT AUTO_INCREMENT PRIMARY KEY,                                 -- Unique ID for each good
+    name           VARCHAR(100)   NOT NULL,                                        -- Name of the product
+    description    TEXT,                                                           -- Description of the product
+    price          DECIMAL(10, 2) NOT NULL,                                        -- Price of the product
+    stock_quantity INT            NOT NULL,                                        -- Stock quantity available
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                            -- Timestamp when the record was created
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Timestamp when the record was last updated
+);
+
 
 # 2. Заполнить таблицу тестовыми данными: 3-5 заказчиков и с десяток ордеров так,
 # чтобы у всех заказчиков было разное количество заказов.
@@ -199,3 +215,55 @@ SELECT order_name,
        round((100 - (discounter_price * 100 / total_amount)), 2) AS `процент_скидки`
 FROM Orders
 ORDER BY `процент_скидки` DESC;
+
+# Удалим пользователя и все его заказы
+delete
+FROM Customers
+where customer_id = 4;
+
+select *
+from Orders;
+
+-- Add foreign key constraint
+ALTER TABLE Orders
+    ADD COLUMN goods_id INT NOT NULL AFTER customer_id; -- Add `goods_id` as a foreign key
+
+ALTER TABLE Orders
+    ADD CONSTRAINT `Orders_ibfk_goods`
+        FOREIGN KEY (`goods_id`) REFERENCES `Goods` (`goods_id`) ON DELETE CASCADE;
+
+-- Inserting individual order names from Orders into the Goods table with random descriptions and values
+INSERT INTO Goods (name, description, price, stock_quantity)
+SELECT DISTINCT order_name,
+                CASE
+                    WHEN order_name = 'Bicycle' THEN 'A two-wheel high-performance bicycle built for long rides.'
+                    WHEN order_name = 'Car' THEN 'A compact family car with excellent fuel efficiency.'
+                    WHEN order_name = 'Plane' THEN 'A private jet for luxurious travel experiences.'
+                    ELSE 'Miscellaneous Item'
+                    END                       AS product_description,
+                ROUND(50 + (RAND() * 500), 2) AS price,         -- Random price between 50 and 550
+                FLOOR(5 + (RAND() * 95))      AS stock_quantity -- Random stock between 5 and 100
+FROM Orders group by order_name;
+
+select *
+from Goods;
+select *
+from Orders;
+
+-- Adding a few more unique products directly to the Goods table
+INSERT INTO Goods (name, description, price, stock_quantity)
+VALUES ('Smartphone', 'A high-performance smartphone with the latest AI processor.', 699.99, 50),
+       ('Laptop', 'A powerful laptop with 16GB RAM and 1TB SSD storage.', 999.99, 20),
+       ('Smart Watch', 'A sleek and modern smartwatch with numerous health tracking features.', 299.49, 30),
+       ('Headphones', 'Wireless noise-cancelling headphones with a long battery life.', 199.95, 60),
+       ('Gaming Console', 'The latest gaming console with ultra-HD realism.', 499.99, 40),
+       ('Electric Scooter', 'An eco-friendly electric scooter with a 50-mile range.', 799.00, 10);
+
+#update Orders set order_id = CASE when
+update Orders O
+LEFT JOIN Goods G on O.order_name = G.name
+set O.goods_id = G.goods_id;
+
+-- Удаляем столбец order_name
+ALTER TABLE Orders
+    DROP COLUMN order_name;
