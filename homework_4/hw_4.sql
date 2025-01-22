@@ -193,6 +193,16 @@ ORDER BY frequency DESC
 LIMIT 1;
 
 # 7. Вывести список заказов с максимальной скидкой.
+update Orders
+set discounter_price = total_amount * (1 - (rand() * 50) / 100);
+
+update Orders
+set discounter_price = total_amount / 2
+where goods_id = 3;
+
+select order_id, total_amount, discounter_price, round((100 - (discounter_price * 100 / total_amount)), 2) AS `% discount`
+from Orders order by `% discount` desc ;
+
 SELECT order_name,
        total_amount,
        discounter_price,
@@ -201,6 +211,31 @@ FROM Orders
 WHERE round((100 - (discounter_price * 100 / total_amount)), 2) =
       (SELECT MAX(round((100 - (discounter_price * 100 / total_amount)), 2))
        FROM Orders);
+
+SELECT order_name,
+       total_amount,
+       discounter_price,
+       ROUND((100 - (discounter_price * 100 / total_amount)), 2) AS `% discount`
+FROM Orders
+HAVING `% discount` = (
+    SELECT MAX(ROUND((100 - (discounter_price * 100 / total_amount)), 2))
+    FROM Orders
+);
+
+WITH DiscountedOrders AS (
+    SELECT order_name,
+           total_amount,
+           discounter_price,
+           ROUND((100 - (discounter_price * 100 / total_amount)), 2) AS `% discount`
+    FROM Orders
+)
+SELECT order_name,
+       total_amount,
+       discounter_price,
+       `% discount`
+FROM DiscountedOrders
+WHERE `% discount` = (SELECT MAX(`% discount`) FROM DiscountedOrders);
+
 #8. Ответьте в 1 предложении: как вы определите скидку?
 -- От 100 отнять (скидочную цену * 100 и поделить на полную стоимость)
 -- например 100 - (90 * 100 / 100) = 10% или 1 - (скидочная(90) * 100% / полная(100) / 100%) = 0.1
@@ -243,7 +278,8 @@ SELECT DISTINCT order_name,
                     END                       AS product_description,
                 ROUND(50 + (RAND() * 500), 2) AS price,         -- Random price between 50 and 550
                 FLOOR(5 + (RAND() * 95))      AS stock_quantity -- Random stock between 5 and 100
-FROM Orders group by order_name;
+FROM Orders
+group by order_name;
 
 select *
 from Goods;
@@ -261,9 +297,28 @@ VALUES ('Smartphone', 'A high-performance smartphone with the latest AI processo
 
 #update Orders set order_id = CASE when
 update Orders O
-LEFT JOIN Goods G on O.order_name = G.name
+    LEFT JOIN Goods G on O.order_name = G.name
 set O.goods_id = G.goods_id;
 
--- Удаляем столбец order_name
+
+-- add the foreign key with cascade options
 ALTER TABLE Orders
-    DROP COLUMN order_name;
+    ADD CONSTRAINT Orders_ibfk_order_name FOREIGN KEY (order_name) REFERENCES Goods (name)
+        ON UPDATE CASCADE ON DELETE RESTRICT;
+
+alter table Customers
+    drop updated_at,
+    drop last_modified;
+
+ALTER TABLE Customers
+    ADD COLUMN last_modified DATE DEFAULT (CURRENT_DATE());
+
+ALTER TABLE Customers
+    change last_modified updated_at datetime DEFAULT NOW();
+
+update Customers
+set updated_at = date_format(updated_at, '%Y-%m-%d') + interval time_format(current_time, '%H:%i:%s') hour_second;
+
+
+select *
+FROM Customers;
