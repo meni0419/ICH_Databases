@@ -2,11 +2,10 @@
 # Итоговая выборка должна содержать два столбца: Name, Population.
 
 select c.Name, c.Population
-from city c
-union
+from world.city c
+union all
 select cn.Name, cn.Population
-from country cn
-order by Name;
+from world.country cn order by Name;
 
 # 3. Посмотреть на таблицы в базе world и объяснить ограничения нескольких столбцов - ответить 1 предложением
 -- В таблице city поля не могут быть null, и поле CountryCode связано по foreign key с таблицей country поле Code,
