@@ -60,13 +60,17 @@ having avg_s > (select MAX(av)
 
 # больше чем средняя зп в их отделе
 
-with t2 as (
-  select department_id, ROUND(avg(salary), 2) as avg_s_d
-  from employees
-  group by department_id
-)
-select e.employee_id emp, e.salary s, '>', t2.avg_s_d avg
+with t2 as (select department_id, ROUND(avg(salary), 2) as avg_s_d
+            from employees
+            group by department_id)
+select e.employee_id                                        id,
+       Concat(e.last_name, ' ', LEFT(e.first_name, 1), '.') 'ФИО',
+       e.salary                                             'ЗП',
+       '>',
+       t2.avg_s_d                                           'СРД',
+       d.department_name                                    'Деп'
 from employees e
-join t2 on e.department_id = t2.department_id
+         join t2 on e.department_id = t2.department_id
+join departments d ON d.department_id = e.department_id
 where e.salary > t2.avg_s_d
 group by e.department_id, e.salary;
