@@ -6,7 +6,7 @@ WITH seller_avg_sales AS (SELECT s.SELL_ID,
                                  se.SNAME,
                                  AVG(s.AMT)                             AS avg_sale_amount,
                                  RANK() OVER (ORDER BY AVG(s.AMT) DESC) AS high_rank,
-                                 RANK() OVER (ORDER BY AVG(s.AMT) ASC)  AS low_rank
+                                 RANK() OVER (ORDER BY AVG(s.AMT))      AS low_rank
                           FROM ORDERS s
                                    JOIN
                                SELLERS se ON s.SELL_ID = se.SELL_ID
@@ -23,6 +23,56 @@ FROM seller_avg_sales
 WHERE high_rank = 1
    OR low_rank = 1
 ORDER BY avg_sale_amount DESC;
+
+# произведите ранжирование департаментов по средней зарплате.
+select d.department_id,
+       d.department_name,
+       RANK() OVER (ORDER BY COALESCE(avg(salary), 0)) as salary_rank,
+       COALESCE(avg(salary), 0)                        as avg_s
+from employees e
+         RIGHT join departments d ON d.department_id = e.department_id
+group by e.department_id;
+
+# 2. Выведите топ-3 сотрудников с наивысшей зарплатой в каждом департаменте.
+with t1 as (SELECT d.department_name,
+                   e.employee_id,
+                   e.department_id,
+                   e.salary,
+                   RANK() OVER (PARTITION BY e.department_id ORDER BY salary DESC) AS `rank`
+            FROM employees e
+                     LEFT JOIN departments d
+                               ON e.department_id = d.department_id)
+SELECT *
+FROM t1
+WHERE t1.`rank` <= 3;
+
+# Выведите второго по зарплате сотрудника в каждом департаменте.
+select *
+from (select d.department_name,
+             e.last_name,
+             e.first_name,
+             dense_rank() over (PARTITION BY e.department_id ORDER BY salary DESC) salary_rank
+      from employees e
+               right join departments d ON d.department_id = e.department_id) s
+where s.salary_rank = 2;
+
+
+# Получить информацию о зарплате сотрудников, а также рассчитать кумулятивную и относительную кумулятивную сумму зарплаты для каждого сотрудника в пределах своего департамента.
+with cum_sum as (select e.first_name                                                              name,
+                        e.last_name                                                               last,
+                        e.salary,
+                        e.department_id                                                           dep,
+                        sum(e.salary) over (partition by department_id order by e.employee_id) as emp_dep_sum
+                 from employees e
+                 order by e.department_id)
+select *, ROUND(cum_sum.emp_dep_sum / sum(cum_sum.salary) over (partition by cum_sum.dep) * 100, 2) r_sum
+from cum_sum;
+
+
+
+
+
+
 
 # Напишите SQL-запрос для анализа покупок, совершенных во вторник, и предоставьте информацию о каждом заказе,
 # включая сумму, дату, имя покупателя и имя продавца.
@@ -66,23 +116,16 @@ SELECT MA.`MONTH`, MA.ORDERS_AMOUNT
 FROM MA
 WHERE MA.ORDERS_AMOUNT = (SELECT MAX(MA.ORDERS_AMOUNT) FROM MA);
 
-SELECT
-    MONTH(ODATE) AS month_number,
-    COUNT(*) AS purchase_count
-FROM
-    ORDERS
-GROUP BY
-    MONTH(ODATE)
-HAVING
-    COUNT(*) = (
-        SELECT COUNT(*)
-        FROM ORDERS
-        GROUP BY MONTH(ODATE)
-        ORDER BY COUNT(*) DESC
-        LIMIT 1
-    )
-ORDER BY
-    month_number;
+SELECT MONTH(ODATE) AS month_number,
+       COUNT(*)     AS purchase_count
+FROM ORDERS
+GROUP BY MONTH(ODATE)
+HAVING COUNT(*) = (SELECT COUNT(*)
+                   FROM ORDERS
+                   GROUP BY MONTH(ODATE)
+                   ORDER BY COUNT(*) DESC
+                   LIMIT 1)
+ORDER BY month_number;
 
 # 1. Вывести сегодняшнюю дату в формате: день недели, число, месяц, год.
 select DATE_FORMAT(NOW(), '%W, %d %M %Y') as `date`
