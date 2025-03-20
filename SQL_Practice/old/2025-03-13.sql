@@ -41,5 +41,5 @@ where class_rank < 3;
 with c_cnt_order as (select CUST_ID, count(*) cnt from ORDERS group by CUST_ID)
 SELECT DISTINCT AVG(c_cnt_order.cnt) over (partition by c.CITY) cnt_o, c.CITY
 FROM CUSTOMERS c
-         join c_cnt_order ON c_cnt_order.CUST_ID = c.CUST_ID
-;
+         join c_cnt_order ON c_cnt_order.CUST_ID = c.CUST_ID;
+
