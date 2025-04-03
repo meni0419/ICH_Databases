@@ -1,5 +1,3 @@
-from MongoDB.Practice.db_connect import get_db
-
 queries = {
     "trips": {
         "query": lambda db: db["trips"]

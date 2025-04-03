@@ -1,17 +1,23 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from the .env file
+load_dotenv()
 
 CONNECTIONS = {
     "ich1": {
-        "uri": "mongodb://ich1:password@mongo.edu.itcareerhub.de:27017",
+        "uri": f"mongodb://{os.getenv('ICH1_USERNAME')}:{os.getenv('ICH1_PASSWORD')}@{os.getenv('MONGO_HOST')}:{os.getenv('MONGO_PORT')}",
         "auth_source": "ich",
         "uri_params": "?readPreference=primary&ssl=false&authMechanism=DEFAULT"
     },
     "ich_editor": {
-        "uri": "mongodb://ich_editor:verystrongpassword@mongo.edu.itcareerhub.de:27017",
+        "uri": f"mongodb://{os.getenv('ICH_EDITOR_USERNAME')}:{os.getenv('ICH_EDITOR_PASSWORD')}@{os.getenv('MONGO_HOST')}:{os.getenv('MONGO_PORT')}",
         "auth_source": "ich_edit",
         "uri_params": "?readPreference=primary&ssl=false&authMechanism=DEFAULT"
     }
 }
+
 
 def get_db(connection_name, db_name):
     config = CONNECTIONS[connection_name]
