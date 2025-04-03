@@ -1,0 +1,6 @@
+dnspython==2.7.0
+markdown-it-py==3.0.0
+mdurl==0.1.2
+Pygments==2.19.1
+pymongo==4.11.3
+rich==14.0.0
