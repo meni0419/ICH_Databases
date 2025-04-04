@@ -2,7 +2,7 @@ queries = {
     # 1. Из коллекции customers выяснить из какого города "Sven Ottlieb"
     "hw1_task1": {
         "query": lambda db: db["customers"].
-        find_one({"ContactName": "Sven Ottlieb"},
+        find({"ContactName": "Sven Ottlieb"},
                  {"_id": 0, "City": 1, "ContactName": 1}),
         "db_name": "ich",
         "connection": "ich1"
@@ -27,7 +27,7 @@ queries = {
         "query": lambda db: db["US_Adult_Income"].aggregate([
             {"$match": {"age": 90}},
             {"$group": {"_id": None, "count": {"$sum": 1}}},
-            {"$project": {"_id": 0, "count": 1}}  # Убираем _id, оставляем count
+            {"$project": {"_id": 0, "count": 1}}
         ]),
         "db_name": "ich",
         "connection": "ich1"
@@ -35,7 +35,7 @@ queries = {
     # 4. Найти _id ObjectId документа, в котором education " IT-career-hub"
     "hw1_task4": {
         "query": lambda db: db["US_Adult_Income"]
-        .find({"education": " IT-career-hub"},
+        .find_one({"education": " IT-career-hub"},
               {"_id": 1}
               ),
         "db_name": "ich",
