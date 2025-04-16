@@ -1,16 +1,17 @@
 from MongoDB.collection import collections
 
 queries = {
-    "trips": collections.trips
-    .find({},
-          {"tripduration": 1, "bikeid": 1, "_id": 0})
-    .sort("tripduration", -1).limit(1),
+    "pr2_trips": collections.trips
+        .find({},
+              {"tripduration": 1, "bikeid": 1, "_id": 0})
+        .sort("tripduration", -1)
+        .limit(1),
 
-    "find_taylor": collections.Spotify_Youtube
+    "pr2_find_taylor2": collections.Spotify_Youtube
     .find({"Artist": "Taylor Swift", "Danceability": {"$gt": 0.7}}),
 
     # Отображать только «Title», «Artist» и «Views» для всех песен.
-    "find_songs": collections.Spotify_Youtube
+    "pr2_find_songs": collections.Spotify_Youtube
     .find({},
           {"_id": 0, "Title": 1, "Artist": 1, "Views": 1})
     .limit(10),

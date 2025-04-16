@@ -1,28 +1,28 @@
 from MongoDB.collection import collections
 
 queries = {
-    "43-imdb": collections.imdb
+    "43_imdb": collections.imdb
     .find({"tomatoes": {"$exists": True},
            "tomatoes.viewer.rating": {"$gt": 4.5}})
     .sort("released", -1),
 
-    "43-imdb-count": collections.imdb
+    "43_imdb-count": collections.imdb
     .count_documents({"tomatoes": {"$exists": True},
                       "tomatoes.viewer.rating": {"$gt": 4.5}}),
 
     # Для фильмов жанра «Драма» и из США, покажите их сюжет (plot), продолжительность (runtime) и название (title). Упорядочите результаты по убыванию продолжительности.
-    "43-imdb-info": collections.imdb
+    "43_imdb-info": collections.imdb
     .find({"genres": "Drama", "countries": "USA"},
           {"plot": 1, "runtime": 1, "title": 1, })
     .sort([("runtime", -1), ("title", -1)]),
 
     # Для фильмов жанра «Драма» и из США, покажите их сюжет (plot), продолжительность (runtime) и название (title). Упорядочите результаты по убыванию продолжительности.
-    "43-imdb-info2": collections.imdb
+    "43_imdb-info2": collections.imdb
     .find({"genres": "Drama", "countries": "USA"},
           {"plot": 1, "runtime": 1, "title": 1, })
     .sort("runtime", -1),
 
-    "43-imdb-info3": collections.imdb
+    "43_imdb-info3": collections.imdb
     .find({"genres": {"$in": ["Drama", "Fantasy"]}, "countries": "USA"},
           {"genres": 1, "plot": 1, "runtime": 1, "title": 1})
     .sort("runtime", -1),
@@ -33,7 +33,7 @@ queries = {
     # ● имеют награды или номинации.
     # Выведите название, год выхода и длительность и не показывайте идентификатор документа.
     # Отсортируйте результаты по возрастанию рейтинга IMDB.
-    "43-imdb-info4": collections.imdb
+    "43_imdb-info4": collections.imdb
     .aggregate([{"$set": {"year_int": {"$toInt": "$year"}}},
                 {"$match": {"year_int": {"$gte": 1900, "$lte": 1910},
                             "imdb.rating": {"$gt": 7.0},
@@ -43,7 +43,7 @@ queries = {
                 ]),
 
     # Вернуть пользователей, чей возраст находится в диапазоне от 22 до 30 лет
-    "43-customers-age": collections.US_Adult_Income
+    "43_customers-age": collections.US_Adult_Income
     .find({"$and": [{"age": {"$gte": 22}},
                     {"age": {"$lte": 30}}]})
     .limit(10)

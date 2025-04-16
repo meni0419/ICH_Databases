@@ -6,7 +6,7 @@ CONFIGS = {
         "connection": "ich1",
         "db_name": "ich",
         "collections": {
-            "Spotify_YouTube": {},
+            "Spotify_Youtube": {},
             "UK_used_cars": {},
             "US_Adult_Income": {},
             "bookings": {},
