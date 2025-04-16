@@ -65,15 +65,13 @@ class JSONEncoder(json.JSONEncoder):
 
 # Получение данных
 query_config = queries[args.query]
-db = get_db(
-    connection_name=query_config["connection"],
-    db_name=query_config["db_name"]
-)
-result = query_config["query"](db)
+# db = get_db(
+#     connection_name=query_config["connection"],
+#     db_name=query_config["db_name"]
+# )
+result = queries[args.query]
 
 # Обработка разных типов результатов
-
-
 if isinstance(result, (pymongo.cursor.Cursor, CommandCursor)):
     documents = list(result)
 elif result is None:
