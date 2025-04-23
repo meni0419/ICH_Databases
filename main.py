@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 from pymongo.command_cursor import CommandCursor
 import pymongo
+from pymongo import results
 from bson import ObjectId
 from pygments import highlight
 from pygments.lexers import JsonLexer
@@ -69,11 +70,15 @@ query_config = queries[args.query]
 #     connection_name=query_config["connection"],
 #     db_name=query_config["db_name"]
 # )
-result = queries[args.query]
+query_func = queries[args.query]
+result = query_func()
 
 # Обработка разных типов результатов
 if isinstance(result, (pymongo.cursor.Cursor, CommandCursor)):
     documents = list(result)
+elif isinstance(result, pymongo.results.InsertManyResult):
+    # Для операций вставки возвращаем только IDs
+    documents = {"inserted_ids": result.inserted_ids}
 elif result is None:
     documents = []
 else:
