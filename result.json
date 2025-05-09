@@ -1,6 +1,12 @@
 [
     {
-        "name": "Sydney Hyde Park City Apartment (checkin from 6am)",
-        "rating": 100
+        "_id": "Attrited Customer",
+        "avg_cc_12m": 2.97,
+        "avg_mi_12m": 2.69
+    },
+    {
+        "_id": "Existing Customer",
+        "avg_cc_12m": 2.36,
+        "avg_mi_12m": 2.27
     }
 ]
