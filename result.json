@@ -1,12 +1,6 @@
 [
     {
-        "_id": "Berlin",
-        "count": 2,
-        "sum_amount": 25.15
-    },
-    {
-        "_id": "Madrid",
-        "count": 1,
-        "sum_amount": 8.0
+        "name": "Luxury Villa with Pool",
+        "rating": 98
     }
 ]

@@ -5,7 +5,7 @@ from pymongo.errors import OperationFailure
 class CollectionManager:
     _connections_cache = {}
     _collection_cache = {}  # Новый кэш для коллекций
-    _connection_order = ["ich_editor", "ich1"]
+    _connection_order = ["atlas", "ich_editor", "ich1"]
 
     def __getitem__(self, collection_name):
         return self.__getattr__(collection_name)

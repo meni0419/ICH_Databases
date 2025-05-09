@@ -15,9 +15,14 @@ CONNECTIONS = {
         "uri": f"mongodb://{os.getenv('ICH_EDITOR_USERNAME')}:{os.getenv('ICH_EDITOR_PASSWORD')}@{os.getenv('MONGO_HOST')}:{os.getenv('MONGO_PORT')}",
         "auth_source": "ich_edit",
         "uri_params": "?readPreference=primary&ssl=false&authMechanism=DEFAULT"
+    },
+    "atlas": {
+        "uri": f"mongodb+srv://{os.getenv('ATLAS_USERNAME')}:{os.getenv('ATLAS_PASSWORD')}@{os.getenv('ATLAS_HOST')}",
+        "auth_source": "admin",
+        "uri_params": "?retryWrites=true&w=majority&appName=Atlas"
     }
 }
-
+# mongodb+srv://meni0419:oc9hg6KfwyjoUKUp@atlas.nk0bblz.mongodb.net/?retryWrites=true&w=majority&appName=Atlas
 
 def get_db(connection_name, db_name):
     config = CONNECTIONS[connection_name]
