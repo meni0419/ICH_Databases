@@ -7,7 +7,7 @@ from pathlib import Path
 from pymongo.command_cursor import CommandCursor
 import pymongo
 from pymongo import results
-from bson import ObjectId
+from bson import ObjectId, Decimal128
 from pygments import highlight
 from pygments.lexers import JsonLexer
 from pygments.formatters.terminal256 import Terminal256Formatter
@@ -62,6 +62,8 @@ class JSONEncoder(json.JSONEncoder):
             return str(obj)
         if isinstance(obj, datetime):
             return obj.isoformat()
+        if isinstance(obj, Decimal128):
+            return float(obj.to_decimal())
         return super().default(obj)
 
 # Получение данных
