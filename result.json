@@ -1,12 +1,142 @@
 [
     {
-        "_id": "Attrited Customer",
-        "avg_cc_12m": 2.97,
-        "avg_mi_12m": 2.69
+        "Album": "VIDA",
+        "Artist": "Luis Fonsi",
+        "Stream": 1506598267,
+        "Title": "Luis Fonsi - Despacito ft. Daddy Yankee",
+        "Views": 8079649362.0
     },
     {
-        "_id": "Existing Customer",
-        "avg_cc_12m": 2.36,
-        "avg_mi_12m": 2.27
+        "Album": "VIDA",
+        "Artist": "Daddy Yankee",
+        "Stream": 1506598267,
+        "Title": "Luis Fonsi - Despacito ft. Daddy Yankee",
+        "Views": 8079646911.0
+    },
+    {
+        "Album": "÷ (Deluxe)",
+        "Artist": "Ed Sheeran",
+        "Stream": 3362005201,
+        "Title": "Ed Sheeran - Shape of You (Official Music Video)",
+        "Views": 5908398479.0
+    },
+    {
+        "Album": "See You Again (feat. Charlie Puth)",
+        "Artist": "Charlie Puth",
+        "Stream": 1521254554,
+        "Title": "Wiz Khalifa - See You Again ft. Charlie Puth [Official Video] Furious 7 Soundtrack",
+        "Views": 5773798407.0
+    },
+    {
+        "Album": "See You Again (feat. Charlie Puth)",
+        "Artist": "Wiz Khalifa",
+        "Stream": 1521254554,
+        "Title": "Wiz Khalifa - See You Again ft. Charlie Puth [Official Video] Furious 7 Soundtrack",
+        "Views": 5773797147.0
+    },
+    {
+        "Album": "CoComelon Kids Hits, Vol. 1",
+        "Artist": "CoComelon",
+        "Stream": 83434355,
+        "Title": "Wheels on the Bus | CoComelon Nursery Rhymes & Kids Songs",
+        "Views": 4898831101.0
+    },
+    {
+        "Album": "Uptown Special",
+        "Artist": "Mark Ronson",
+        "Stream": 1653819736,
+        "Title": "Mark Ronson - Uptown Funk (Official Video) ft. Bruno Mars",
+        "Views": 4821016218.0
+    },
+    {
+        "Album": "Gangnam Style (강남스타일)",
+        "Artist": "PSY",
+        "Stream": 370991124,
+        "Title": "PSY - GANGNAM STYLE(강남스타일) M/V",
+        "Views": 4679767471.0
+    },
+    {
+        "Album": "V",
+        "Artist": "Maroon 5",
+        "Stream": 1502780803,
+        "Title": "Maroon 5 - Sugar (Official Music Video)",
+        "Views": 3817733132.0
+    },
+    {
+        "Album": "PRISM",
+        "Artist": "Katy Perry",
+        "Stream": 884721001,
+        "Title": "Katy Perry - Roar (Official)",
+        "Views": 3725748519.0
+    },
+    {
+        "Album": "Native",
+        "Artist": "OneRepublic",
+        "Stream": 1805319715,
+        "Title": "OneRepublic - Counting Stars (Official Music Video)",
+        "Views": 3721610307.0
+    },
+    {
+        "Album": "Purpose (Deluxe)",
+        "Artist": "Justin Bieber",
+        "Stream": 1740759086,
+        "Title": "Justin Bieber - Sorry (PURPOSE : The Movement)",
+        "Views": 3627305503.0
+    },
+    {
+        "Album": "x (Wembley Edition)",
+        "Artist": "Ed Sheeran",
+        "Stream": 2154334378,
+        "Title": "Ed Sheeran - Thinking Out Loud (Official Music Video)",
+        "Views": 3547155867.0
+    },
+    {
+        "Album": "CoComelon Kids Hits, Vol. 1",
+        "Artist": "CoComelon",
+        "Stream": 46554351,
+        "Title": "Baa Baa Black Sheep | CoComelon Nursery Rhymes & Kids Songs",
+        "Views": 3486504328.0
+    },
+    {
+        "Album": "Listen Up! The Official 2010 FIFA World Cup Album",
+        "Artist": "Shakira",
+        "Stream": 629918488,
+        "Title": "Shakira - Waka Waka (This Time for Africa) (The Official 2010 FIFA World Cup™ Song)",
+        "Views": 3463816330.0
+    },
+    {
+        "Album": "PRISM",
+        "Artist": "Katy Perry",
+        "Stream": 1067826820,
+        "Title": "Katy Perry - Dark Horse (Official) ft. Juicy J",
+        "Views": 3442526730.0
+    },
+    {
+        "Album": "Different World",
+        "Artist": "Alan Walker",
+        "Stream": 1683178074,
+        "Title": "Alan Walker - Faded",
+        "Views": 3400741854.0
+    },
+    {
+        "Album": "All The Little Lights (Deluxe Version)",
+        "Artist": "Passenger",
+        "Stream": 135121858,
+        "Title": "Passenger | Let Her Go (Official Video)",
+        "Views": 3376086171.0
+    },
+    {
+        "Album": "All The Little Lights",
+        "Artist": "Passenger",
+        "Stream": 1785368454,
+        "Title": "Passenger | Let Her Go (Official Video)",
+        "Views": 3376086171.0
+    },
+    {
+        "Album": "÷ (Deluxe)",
+        "Artist": "Ed Sheeran",
+        "Stream": 2312689776,
+        "Title": "Ed Sheeran - Perfect (Official Music Video)",
+        "Views": 3361086287.0
     }
 ]
